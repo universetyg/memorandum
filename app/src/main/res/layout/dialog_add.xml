@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_style"
+    android:background="@drawable/lin_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_add_task"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:hint="添加任务"
+        app:layout_constraintEnd_toStartOf="@+id/put_task"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/put_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_add_task"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_add_task"
+        app:srcCompat="@mipmap/put" />
+
+    <ImageView
+        android:id="@+id/date_logo"
+        android:layout_width="40dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_add_task"
+        app:layout_constraintTop_toBottomOf="@+id/et_add_task"
+        app:srcCompat="@mipmap/date" />
+
+    <TextView
+        android:id="@+id/set_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="设置截止日期"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/date_logo"
+        app:layout_constraintStart_toEndOf="@+id/date_logo"
+        app:layout_constraintTop_toTopOf="@+id/date_logo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

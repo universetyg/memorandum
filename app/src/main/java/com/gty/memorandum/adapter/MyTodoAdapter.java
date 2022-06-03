@@ -1,6 +1,5 @@
 package com.gty.memorandum.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gty.memorandum.DetailActivity;
+import com.gty.memorandum.activity.DetailActivity;
 import com.gty.memorandum.R;
 import com.gty.memorandum.bean.MyTodo;
 
