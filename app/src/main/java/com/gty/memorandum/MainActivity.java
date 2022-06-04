@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 ImageView putTask = (ImageView) inflate.findViewById(R.id.put_task);
                 TextView setDate = (TextView) inflate.findViewById(R.id.set_date);
                 ImageView dateLogo = (ImageView) inflate.findViewById(R.id.date_logo);
+                EditText etContent = (EditText) inflate.findViewById(R.id.et_content);
                 //将布局设置给Dialog
                 dialog.setContentView(inflate);
                 //获取当前Activity所在的窗体

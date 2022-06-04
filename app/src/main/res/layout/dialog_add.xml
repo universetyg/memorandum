@@ -16,7 +16,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:hint="添加任务"
+        android:hint="输入任务标题"
         app:layout_constraintEnd_toStartOf="@+id/put_task"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,15 +31,28 @@
         app:layout_constraintTop_toTopOf="@+id/et_add_task"
         app:srcCompat="@mipmap/put" />
 
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:hint="输入任务内容"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_add_task" />
+
     <ImageView
         android:id="@+id/date_logo"
         android:layout_width="40dp"
         android:layout_height="42dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/et_add_task"
-        app:layout_constraintTop_toBottomOf="@+id/et_add_task"
+        app:layout_constraintTop_toBottomOf="@+id/et_content"
         app:srcCompat="@mipmap/date" />
 
     <TextView
