@@ -54,14 +54,14 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyTodoAdapter.MyHolder holder, int position) {
-//        MyTodo myTodo = mTodoList.get(position);
-        holder.tvTitle.setText("测试"+position);
-        holder.tvDate.setText("6月3日");
+        MyTodo myTodo = mTodoList.get(position);
+        holder.tvTitle.setText(myTodo.getTitle());
+        holder.tvDate.setText(myTodo.getDeadline());
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return mTodoList.size();
     }
 
 

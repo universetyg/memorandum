@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gty.memorandum.adapter.MyTodoAdapter;
 import com.gty.memorandum.bean.MyTodo;
+import com.gty.memorandum.database.TodoDatabase;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private Context mContext = MainActivity.this;
     private View inflate;
+    MyTodoAdapter myTodoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void initView(){
+    public void initView() {
         //recyclerview
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        MyTodoAdapter myTodoAdapter = new MyTodoAdapter(myTodoList);
+        myTodoAdapter = new MyTodoAdapter(myTodoList);
         recyclerView.setAdapter(myTodoAdapter);
 
         //弹出对话框
@@ -74,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 TextView setDate = (TextView) inflate.findViewById(R.id.set_date);
                 ImageView dateLogo = (ImageView) inflate.findViewById(R.id.date_logo);
                 EditText etContent = (EditText) inflate.findViewById(R.id.et_content);
+
+
                 //将布局设置给Dialog
                 dialog.setContentView(inflate);
                 //获取当前Activity所在的窗体
@@ -87,7 +93,30 @@ public class MainActivity extends AppCompatActivity {
                 lp.y = 40;//设置Dialog距离底部的距离
                 //将属性设置给窗体
                 dialogWindow.setAttributes(lp);
-                dialog .show();//显示对话框
+                dialog.show();//显示对话框
+
+
+                //插入数据
+                putTask.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        List<MyTodo> myTodoList = new ArrayList<>();
+                        MyTodo myTodo = new MyTodo();
+                        myTodo.setTitle(etAddTask.getText().toString());
+                        myTodo.setContent(etContent.getText().toString());
+                        myTodo.setDeadline(setDate.getText().toString());
+
+                        myTodoList.add(myTodo);
+                        addData(myTodoList);
+                        dialog.dismiss();//消失
+
+                        selectData();
+
+                        Toast.makeText(MainActivity.this, "添加成功",Toast.LENGTH_SHORT).show();
+
+
+                    }
+                });
 
 //                dialog.dismiss();//消失
 
@@ -95,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //上拉加载下拉刷新
-        RefreshLayout refreshLayout = (RefreshLayout)findViewById(R.id.refreshLayout);
+        RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
         refreshLayout.setRefreshHeader(new ClassicsHeader(this));
         refreshLayout.setRefreshFooter(new ClassicsFooter(this));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -110,7 +139,45 @@ public class MainActivity extends AppCompatActivity {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
             }
         });
+
+
     }
 
+    //添加
+    private void addData(List<MyTodo> myTodoLists) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TodoDatabase
+                        .getInstance(MainActivity.this)
+                        .getTodoDao()
+                        .insert(myTodoLists);
+            }
+        }).start();
+    }
 
+    //查询
+    @SuppressLint("NotifyDataSetChanged")
+    private void selectData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<MyTodo> allTodo = TodoDatabase
+                        .getInstance(MainActivity.this)
+                        .getTodoDao()
+                        .getAllMyTodoInfo();
+                myTodoList.clear();
+                myTodoList.addAll(allTodo);
+            }
+        }).start();
+
+        myTodoAdapter.notifyDataSetChanged();//刷新
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        selectData();
+    }
 }

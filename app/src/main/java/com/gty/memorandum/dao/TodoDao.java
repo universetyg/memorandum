@@ -1,0 +1,30 @@
+package com.gty.memorandum.dao;
+
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import com.gty.memorandum.bean.MyTodo;
+
+import java.util.List;
+
+
+@Dao
+public interface TodoDao {
+    @Query("select * from myTodo")
+    List<MyTodo> getAllMyTodoInfo();
+
+    @Query("select * from myTodo where id = :id")
+    List<MyTodo> getMyTodoInfo(int id);
+
+    @Insert()
+    void insert(List<MyTodo> myTodoLists);
+
+    @Update
+    void updateMyTodoInfo(MyTodo... myTodos);
+
+    @Delete
+    void deleteMyTodo(MyTodo... myTodos);
+}
