@@ -146,7 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="15dp"
-        android:text="修改时间：2022年6月5日 18:40"
+        android:text="修改时间："
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"
         app:layout_constraintEnd_toEndOf="parent"
@@ -154,7 +154,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/delete_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
@@ -162,5 +162,15 @@
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
         app:srcCompat="@mipmap/delete" />
+
+    <ImageView
+        android:id="@+id/save_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/delete_detail"
+        app:layout_constraintEnd_toStartOf="@+id/delete_detail"
+        app:layout_constraintTop_toTopOf="@+id/delete_detail"
+        app:srcCompat="@mipmap/save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

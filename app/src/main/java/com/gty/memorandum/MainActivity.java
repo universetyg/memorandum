@@ -207,18 +207,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         //跳转
         myTodoAdapter.setOnItemClickListener(new MyTodoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("title",myTodoList.get(position).getTitle().toString());
-                bundle.putString("deadline",myTodoList.get(position).getDeadline().toString());
-                bundle.putString("content",myTodoList.get(position).getContent().toString());
-                bundle.putString("createTime",myTodoList.get(position).getCreateTime().toString());
-//                bundle.putString("updateTime",myTodoList.get(position).getUpdateTime().toString());
+                bundle.putString("title",myTodoList.get(position).getTitle());
+                bundle.putString("deadline",myTodoList.get(position).getDeadline());
+                bundle.putString("content",myTodoList.get(position).getContent());
+                bundle.putString("createTime",myTodoList.get(position).getCreateTime());
+//                bundle.putInt("position",position);
+                if(null != myTodoList.get(position).getUpdateTime()){
+                    bundle.putString("updateTime",myTodoList.get(position).getUpdateTime());
+
+                }
+                bundle.putInt("id",myTodoList.get(position).getId());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -421,8 +425,7 @@ public class MainActivity extends AppCompatActivity {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
-        String createTime = "创建时间："+year + "年" + month +"月" + day +"日" + hour +":"+minute+":"+second;
-        return createTime;
+        return "创建时间："+year + "年" + (month+1) +"月" + day +"日" + hour +":"+minute+":"+second;
     }
 
 
