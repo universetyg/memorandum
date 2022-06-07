@@ -22,9 +22,10 @@ public interface TodoDao {
     @Insert()
     void insert(List<MyTodo> myTodoLists);
 
+    @Delete
+    void deleteMyTodo(MyTodo... myTodos);
+
     @Update
     void updateMyTodoInfo(MyTodo... myTodos);
 
-    @Delete
-    void deleteMyTodo(MyTodo... myTodos);
 }

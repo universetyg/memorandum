@@ -32,6 +32,11 @@ public class MyTodo {
 
     }
 
+    @Ignore
+    public MyTodo(int id) {
+        this.id = id;
+    }
+
     public MyTodo(int id, String title, String content, String createTime, String updateTime, String deadline, Boolean finish, Boolean deleteItem) {
         this.id = id;
         this.title = title;

@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         myTodoAdapter = new MyTodoAdapter(myTodoList);
         recyclerView.setAdapter(myTodoAdapter);
 
-        //弹出对话框dialog
+        //弹出添加对话框dialog
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,9 +133,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-//                dialog.dismiss();//消失
-
             }
         });
 
@@ -156,7 +153,53 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //长按弹出删除对话框dialog删除
+        myTodoAdapter.setLongClickLisenter(new MyTodoAdapter.LongClickLisenter() {
+            @Override
+            public void LongClickLisenter(int position) {
+                Dialog dialog = new Dialog(mContext,R.style.ActionSheetDialogStyle);
+                inflate = LayoutInflater.from(mContext).inflate(R.layout.dialog_delete,null);
+                //初始化控件
+                Button negative = (Button) inflate.findViewById(R.id.negative);//取消
+                Button positive = (Button) inflate.findViewById(R.id.positive);//确认
+                //  将布局设置给Dialog
+                dialog.setContentView(inflate);
+                //获取当前Activity所在的窗体
+                Window dialogWindow = dialog.getWindow();
+                //设置Dialog从窗体底部弹出
+                dialogWindow.setGravity(Gravity.CENTER);
+                //获得窗体的属性
+                WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+                //如果没有这行代码，弹框的内容会自适应，而不会充满父控件
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.y = 40;//设置Dialog距离底部的距离
+                //将属性设置给窗体
+                dialogWindow.setAttributes(lp);
+                dialog.show();//显示对话框
 
+                //删除数据
+                positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        deleteData(myTodoList.get(position));
+                        dialog.dismiss();
+                        selectData();
+                        Log.d("myTodoList",myTodoList.toString());
+
+                        Toast.makeText(MainActivity.this, "删除成功",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                //取消
+                negative.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     //添加
@@ -188,6 +231,24 @@ public class MainActivity extends AppCompatActivity {
         }).start();
 
         myTodoAdapter.notifyDataSetChanged();//刷新
+
+    }
+
+    //删除
+    private void deleteData(MyTodo myTodo){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TodoDatabase
+                        .getInstance(MainActivity.this)
+                        .getTodoDao()
+                        .deleteMyTodo(myTodo);
+
+                Log.d("del",myTodoList.toString());
+            }
+        }).start();
+
 
     }
 
