@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.gty.memorandum.activity.DetailActivity;
 import com.gty.memorandum.adapter.MyTodoAdapter;
 import com.gty.memorandum.bean.MyTodo;
 import com.gty.memorandum.database.TodoDatabase;
@@ -34,6 +35,8 @@ import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -90,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                  setDate = (TextView) inflate.findViewById(R.id.set_date);
                 ImageView dateLogo = (ImageView) inflate.findViewById(R.id.date_logo);
                 EditText etContent = (EditText) inflate.findViewById(R.id.et_content);
+                TextView createTime = (TextView) inflate.findViewById(R.id.createTime);
                 //将布局设置给Dialog
                 dialog.setContentView(inflate);
                 //获取当前Activity所在的窗体
@@ -121,14 +125,16 @@ public class MainActivity extends AppCompatActivity {
                         myTodo.setTitle(etAddTask.getText().toString());
                         myTodo.setContent(etContent.getText().toString());
                         myTodo.setDeadline(setDate.getText().toString());
+                        myTodo.setCreateTime(getCurrentTime());//创建时间
 
-                        if (myTodo.getTitle().equals("")){
-                            Toast.makeText(MainActivity.this, "请输入标题",Toast.LENGTH_SHORT).show();
+                        if (myTodo.getTitle().equals("") || myTodo.getContent().equals("") || myTodo.getDeadline().equals("设置截止日期")){
+                            Toast.makeText(MainActivity.this, "请输入标题、内容和截止日期",Toast.LENGTH_SHORT).show();
                         }else{
                             myTodoList.add(myTodo);
                             addData(myTodoList);
                             dialog.dismiss();//消失
                             selectData();
+                            Log.d("insert",myTodo.toString());
                             Toast.makeText(MainActivity.this, "添加成功",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -200,6 +206,24 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+
+
+        //跳转
+        myTodoAdapter.setOnItemClickListener(new MyTodoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("title",myTodoList.get(position).getTitle().toString());
+                bundle.putString("deadline",myTodoList.get(position).getDeadline().toString());
+                bundle.putString("content",myTodoList.get(position).getContent().toString());
+                bundle.putString("createTime",myTodoList.get(position).getCreateTime().toString());
+//                bundle.putString("updateTime",myTodoList.get(position).getUpdateTime().toString());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
     }
 
     //添加
@@ -236,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
 
     //删除
     private void deleteData(MyTodo myTodo){
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -387,6 +410,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    //getCurrentTime
+    private String getCurrentTime(){
+        Calendar calendar = Calendar.getInstance();//取得当前时间的年月日 时分秒
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
+        String createTime = "创建时间："+year + "年" + month +"月" + day +"日" + hour +":"+minute+":"+second;
+        return createTime;
     }
 
 

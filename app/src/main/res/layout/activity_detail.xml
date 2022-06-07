@@ -128,7 +128,7 @@
         app:srcCompat="@mipmap/change_time" />
 
     <TextView
-        android:id="@+id/tv_change_time"
+        android:id="@+id/createTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -141,7 +141,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/changeTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
