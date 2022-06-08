@@ -1,5 +1,6 @@
 package com.gty.memorandum.util;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,16 +13,18 @@ import androidx.core.app.NotificationCompat;
 
 import com.gty.memorandum.MainActivity;
 import com.gty.memorandum.R;
-import com.gty.memorandum.activity.PostActivity;
+import com.gty.memorandum.receiver.ClockReceiver;
 
 public class Utils {
     private  static NotificationManager mNotificationManager;
     private static NotificationCompat.Builder mBuilder;
+    String title;
+    String content;
 
     /**
      * 发送通知
      */
-    public static void sendNotification(Context context){
+    public static void sendNotification(Context context,String title,String content){
         //设置 channel_id
         final String CHANNAL_ID = "chat";
 
@@ -41,8 +44,8 @@ public class Utils {
 
         //创建通知
         mBuilder = new NotificationCompat.Builder(context,CHANNAL_ID)
-                .setContentTitle("这是通知标题")
-                .setContentText("这是通知内容")
+                .setContentTitle(title)
+                .setContentText(content)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.mipmap.icon)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.icon))
@@ -60,5 +63,35 @@ public class Utils {
         mBuilder.setContentTitle("你更新了通知标题");
         mBuilder.setContentText("你更新了通知内容");
         mNotificationManager.notify(1,mBuilder.build());
+    }
+
+    public static void setAlarm(Context context, long timeOfAlarm) {
+
+        Intent broadcastIntent = new Intent(context, ClockReceiver.class);
+
+        PendingIntent pIntent = PendingIntent.getBroadcast(
+                context, 0, broadcastIntent, 0
+        );
+
+        AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        if (System.currentTimeMillis() < timeOfAlarm) {
+            if (alarmMgr != null) {
+                alarmMgr.set(AlarmManager.RTC_WAKEUP, timeOfAlarm, pIntent);
+
+                // 非重复闹铃设置
+//                alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//                        SystemClock.elapsedRealtime() + 60 * 1000,
+//                        pIntent
+//                );
+                // 重复性闹铃设置
+                alarmMgr.setInexactRepeating(
+                        AlarmManager.RTC_WAKEUP,
+                        timeOfAlarm,
+                        AlarmManager.INTERVAL_DAY,
+                        pIntent
+                );
+            }
+        }
     }
 }

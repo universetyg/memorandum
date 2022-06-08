@@ -1,10 +1,13 @@
 package com.gty.memorandum.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +32,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 
         TextView tvTitle;
         TextView tvDate;
+        ImageView circle_not_choose;
 
 
 
@@ -36,6 +40,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             tvDate = (TextView) itemView.findViewById(R.id.tv_date);
+            circle_not_choose = (ImageView) itemView.findViewById(R.id.circle_not_choose);
         }
     }
 
@@ -72,6 +77,27 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         MyTodo myTodo = mTodoList.get(position);
         holder.tvTitle.setText(myTodo.getTitle());
         holder.tvDate.setText(myTodo.getDeadline());
+
+        if (myTodo.getClickItem()){
+           holder.circle_not_choose.setImageResource(R.mipmap.choose);//明天继续
+        }else {
+            holder.circle_not_choose.setImageResource(R.mipmap.circle_not_choose);
+        }
+
+        holder.circle_not_choose.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onClick(View view) {
+                if (myTodo.getClickItem()){
+                    myTodo.setClicItem(false);
+                    notifyDataSetChanged();
+                }else {
+                    myTodo.setClicItem(true);
+                    notifyDataSetChanged();
+                }
+            }
+        });
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

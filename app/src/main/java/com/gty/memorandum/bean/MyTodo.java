@@ -25,6 +25,8 @@ public class MyTodo {
     private Boolean finish;
     @ColumnInfo(name = "delete_item",typeAffinity = ColumnInfo.INTEGER)
     private Boolean deleteItem;
+    @ColumnInfo(name = "click_item",typeAffinity = ColumnInfo.INTEGER)
+    private Boolean clickItem = false;
 
 
     @Ignore
@@ -37,7 +39,8 @@ public class MyTodo {
         this.id = id;
     }
 
-    public MyTodo(int id, String title, String content, String createTime, String updateTime, String deadline, Boolean finish, Boolean deleteItem) {
+
+    public MyTodo(int id, String title, String content, String createTime, String updateTime, String deadline, Boolean finish, Boolean deleteItem, Boolean clickItem) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -46,20 +49,7 @@ public class MyTodo {
         this.deadline = deadline;
         this.finish = finish;
         this.deleteItem = deleteItem;
-    }
-
-    @Override
-    public String toString() {
-        return "MyTodo{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", createTime='" + createTime + '\'' +
-                ", updateTime='" + updateTime + '\'' +
-                ", deadline='" + deadline + '\'' +
-                ", finish=" + finish +
-                ", deleteItem=" + deleteItem +
-                '}';
+        this.clickItem = clickItem;
     }
 
     public int getId() {
@@ -125,5 +115,13 @@ public class MyTodo {
 
     public void setDeleteItem(Boolean deleteItem) {
         this.deleteItem = deleteItem;
+    }
+
+    public Boolean getClickItem() {
+        return clickItem;
+    }
+
+    public void setClicItem(Boolean click) {
+        this.clickItem = click;
     }
 }

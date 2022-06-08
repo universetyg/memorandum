@@ -1,20 +1,17 @@
 package com.gty.memorandum;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,16 +22,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gty.memorandum.activity.DetailActivity;
-import com.gty.memorandum.activity.PostActivity;
 import com.gty.memorandum.adapter.MyTodoAdapter;
 import com.gty.memorandum.bean.MyTodo;
 import com.gty.memorandum.database.TodoDatabase;
+import com.gty.memorandum.server.TimerService;
 import com.gty.memorandum.util.Utils;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
@@ -42,13 +38,10 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
-import org.w3c.dom.Text;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     NumberPicker minutePicker;
     TextView setDate;
     TextView edit_list;
+    private TimerService myservice = null;//绑定的service对象
+
 
 //    public static final String BROADCAST_ACTION="com.test.TestBroadcast";
 //    private TestBroadcastReceiver receiver;
@@ -77,9 +72,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
         initView();
+        Intent intent = new Intent(MainActivity.this, TimerService.class);
+        startService(intent);
+
+
 //        registerBroadcast();
-        postBroadcast();
+        //开始绑定
+//        Intent intent = new Intent(MainActivity.this, TimerService.class);
+//        bindService(intent,conn,Context.BIND_AUTO_CREATE);
+//        postBroadcast();
+
 
 
     }
@@ -472,22 +479,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //deadline时发出广播
-    public void postBroadcast(){
-        int len = myTodoAdapter.getItemCount();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//    public void postBroadcast(){
+//        int len = myTodoAdapter.getItemCount();
+//        @SuppressLint("SimpleDateFormat")
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//
+//        for(int i = 0 ; i < len ; i++){
+//            String time1 = myTodoList.get(i).getDeadline();
+//            String time2 = getCurrentTime();
+//            int s= time2.compareTo(time1);//当前时间大于截止时间返回1
+//
+//            if (s==1) {
+//                Utils.sendNotification(MainActivity.this);
+//            }
+//            Log.d("aaaaaaaa",myTodoList.get(i).getDeadline());
+//        }
+//    }
 
 
-        for(int i = 0 ; i < len ; i++){
-            String time1 = myTodoList.get(i).getDeadline();
-            String time2 = getCurrentTime();
-            int s= time2.compareTo(time1);//当前时间大于截止时间返回1
+//    //连接对象，重写OnserviceDisconnected和OnserviceConnected方法
+//    public ServiceConnection conn= new ServiceConnection() {
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+////            Log.i(LOG, "onServiceDisconnected>>>>>>>>");
+//            myservice = null;
+//        }
+//
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+////            Log.i(LOG, "onServiceConnected>>>>>>>>");
+//            myservice = ((TimerService.MyBinder)service).getService();
+////            Log.i(LOG, myservice+">>>>>>>>");
+//        }
+//    };
 
-            if (s==1) {
-                Utils.sendNotification(MainActivity.this);
-            }
-            Log.d("aaaaaaaa",myTodoList.get(i).getDeadline());
-        }
-    }
 
 
 

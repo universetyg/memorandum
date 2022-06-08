@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.gty.memorandum">
     <!-- 读写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,27 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Memorandum">
-        <activity
-            android:name=".activity.DemoActivity"
-            android:exported="true" >
-<!--                 <intent-filter>-->
-<!--                 <action android:name="android.intent.action.MAIN" />-->
-
-
-<!--                 <category android:name="android.intent.category.LAUNCHER" />-->
-<!--                 </intent-filter>-->
-        </activity>
-        <activity
-            android:name=".activity.PostActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
         <activity
             android:name=".activity.MainActivity2"
             android:exported="true">
@@ -56,6 +36,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <service
+            android:name=".server.TimerService"
+            tools:ignore="Instantiatable" />
+
+
+        <receiver
+            android:name=".receiver.ClockReceiver"
+            android:enabled="true"
+            android:exported="true"
+            tools:ignore="MissingClass"/>
     </application>
+
+
+
+
 
 </manifest>
