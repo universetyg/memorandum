@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     NumberPicker hourPicker;
     NumberPicker minutePicker;
     TextView setDate;
+    TextView edit_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         myTodoAdapter = new MyTodoAdapter(myTodoList);
         recyclerView.setAdapter(myTodoAdapter);
+        edit_list = findViewById(R.id.edit_list);//编辑
 
         //弹出添加对话框dialog
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
@@ -227,6 +229,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //点击编辑
+        edit_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
 
     }
 

@@ -88,15 +88,6 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         return mTodoList.size();
     }
 
-//    //删除item
-//    public void removeItem(int position)
-//    {
-//        //操作数据源
-//        mTodoList.remove(position);
-//        //刷新
-//        notifyDataSetChanged();
-//    }
-
     public interface LongClickLisenter {
         void LongClickLisenter(int position);
     }
@@ -115,6 +106,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
+
 
 
 
