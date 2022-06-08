@@ -10,8 +10,9 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+import com.gty.memorandum.MainActivity;
 import com.gty.memorandum.R;
-import com.gty.memorandum.activity.NotificationActivity;
+import com.gty.memorandum.activity.PostActivity;
 
 public class Utils {
     private  static NotificationManager mNotificationManager;
@@ -25,7 +26,7 @@ public class Utils {
         final String CHANNAL_ID = "chat";
 
         //获取 PendingIntent 对象，NotificationActivity是另一个活动
-        Intent intent = new Intent(context, NotificationActivity.class);
+        Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pi = PendingIntent.getActivity(context, 0 ,intent, 0);
 
         //获取系统通知服务

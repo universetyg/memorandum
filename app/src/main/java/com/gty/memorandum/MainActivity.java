@@ -1,15 +1,19 @@
 package com.gty.memorandum;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,9 +31,11 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gty.memorandum.activity.DetailActivity;
+import com.gty.memorandum.activity.PostActivity;
 import com.gty.memorandum.adapter.MyTodoAdapter;
 import com.gty.memorandum.bean.MyTodo;
 import com.gty.memorandum.database.TodoDatabase;
+import com.gty.memorandum.util.Utils;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -42,6 +48,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,12 +67,19 @@ public class MainActivity extends AppCompatActivity {
     TextView setDate;
     TextView edit_list;
 
+//    public static final String BROADCAST_ACTION="com.test.TestBroadcast";
+//    private TestBroadcastReceiver receiver;
+//    private TempReceiver receiver2;
+//    private LocalBroadcastManager localBroadcastManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         initView();
+//        registerBroadcast();
+        postBroadcast();
 
 
     }
@@ -311,8 +325,6 @@ public class MainActivity extends AppCompatActivity {
          Button timeSure = inflate.findViewById(R.id.time_sure);
          Button timeCancel = inflate.findViewById(R.id.time_cancel);
 
-
-
 //限制年份范围为前后五年
         int yearNow = calendar.get(Calendar.YEAR);
         yearPicker.setMinValue(yearNow - 5);
@@ -435,8 +447,52 @@ public class MainActivity extends AppCompatActivity {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
-        return "创建时间："+year + "年" + (month+1) +"月" + day +"日" + hour +":"+minute+":"+second;
+        //获取的日期时间结果
+        String result2 = String.format(Locale.CHINA, "%d-%d-%d %d:%d",
+                year, month, day,hour,minute);
+        return result2;
     }
+
+//    //注册广播
+//    private void registerBroadcast(){
+//        IntentFilter filter=new IntentFilter();
+//        filter.addAction(BROADCAST_ACTION);
+//        receiver=new TestBroadcastReceiver();
+//        receiver2=new TempReceiver();
+//        localBroadcastManager=LocalBroadcastManager.getInstance(this);
+//        localBroadcastManager.registerReceiver(receiver,filter);
+//        localBroadcastManager.registerReceiver(receiver2,filter);
+//    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        localBroadcastManager.unregisterReceiver(receiver);//注销本地广播
+//        localBroadcastManager.unregisterReceiver(receiver2);
+    }
+
+    //deadline时发出广播
+    public void postBroadcast(){
+        int len = myTodoAdapter.getItemCount();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+        for(int i = 0 ; i < len ; i++){
+            String time1 = myTodoList.get(i).getDeadline();
+            String time2 = getCurrentTime();
+            int s= time2.compareTo(time1);//当前时间大于截止时间返回1
+
+            if (s==1) {
+                Utils.sendNotification(MainActivity.this);
+            }
+            Log.d("aaaaaaaa",myTodoList.get(i).getDeadline());
+        }
+    }
+
+
+
+
+
 
 
 }
