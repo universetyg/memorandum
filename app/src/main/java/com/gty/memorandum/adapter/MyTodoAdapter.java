@@ -1,7 +1,9 @@
 package com.gty.memorandum.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gty.memorandum.MainActivity;
 import com.gty.memorandum.R;
+import com.gty.memorandum.activity.DetailActivity;
 import com.gty.memorandum.bean.MyTodo;
+import com.gty.memorandum.database.TodoDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +30,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
     private TextView edit_list ;
     private RecyclerView.LayoutManager layoutManager;
     private ViewGroup parent;
+    Context context;
 
 
     public class MyHolder extends RecyclerView.ViewHolder {
@@ -32,7 +38,6 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         TextView tvTitle;
         TextView tvDate;
         ImageView circle_not_choose;
-
 
 
         public MyHolder(@NonNull View itemView) {
@@ -43,8 +48,9 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         }
     }
 
-    public MyTodoAdapter(List<MyTodo> mTodoList) {
+    public MyTodoAdapter(List<MyTodo> mTodoList,Context mContext) {
         this.mTodoList = mTodoList;
+        this.context = mContext;
     }
 
     @NonNull
@@ -80,8 +86,10 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 
         //clickitem这个值为1时，
         if (myTodo.getClickItem()){
-            holder.circle_not_choose.setImageResource(R.mipmap.choose);//明天继续
-            holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.circle_not_choose.setImageResource(R.mipmap.choose);
+            if (!MainActivity.isEdit) {
+                holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            }
 //            // 渐渐上滑定位到评论区域，如果页面是网络请求的数据，则可以等页面展示结束再滑动。
 //            new Handler().postDelayed(new Runnable() {
 //                @Override
@@ -110,6 +118,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
                     myTodo.setClicItem(true);
                     notifyDataSetChanged();
                 }
+                updateData(myTodo,context);
             }
         });
 
@@ -120,7 +129,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
             @Override
             public void onClick(View view) {
                 //通过接口名调用方法
-                    mOnItemClickListener.onItemClick(view,position);
+                mOnItemClickListener.onItemClick(view,position);
 //                mOnItemClickListener.onItemClick(v, position);
             }
         });
@@ -161,6 +170,21 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 //        layoutManager.startSmoothScroll(smoothScroller);
 //    }
 
+
+    //更新数据
+    private void updateData(MyTodo myTodo, Context context){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TodoDatabase
+                        .getInstance(context)
+                        .getTodoDao()
+                        .updateMyTodoInfo(myTodo);
+                Log.d("update",myTodo.toString());
+            }
+        }).start();
+
+    }
 
 
 

@@ -43,6 +43,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
     TextView edit_list;
     private TimerService myservice = null;//绑定的service对象
     private ConstraintLayout constraint;
+    public static boolean isEdit = false;
+    private TextView choose_all;
+    private TextView choose_delete;
+
 
 
 //    public static final String BROADCAST_ACTION="com.test.TestBroadcast";
@@ -98,11 +103,40 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        myTodoAdapter = new MyTodoAdapter(myTodoList);
+        myTodoAdapter = new MyTodoAdapter(myTodoList,MainActivity.this);
         recyclerView.setAdapter(myTodoAdapter);
         edit_list = findViewById(R.id.edit_list);//编辑
         constraint = findViewById(R.id.constraint);//下面全选删除
         ImageView circle_not_choose = findViewById(R.id.circle_not_choose);
+        choose_all = findViewById(R.id.choose_all);
+        choose_delete = findViewById(R.id.choose_delete);
+
+        //全选
+        choose_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (MyTodo myTodo : myTodoList) {
+                    myTodo.setClicItem(true);
+                }
+                myTodoAdapter.notifyDataSetChanged();
+            }
+        });
+
+        choose_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Iterator<MyTodo> iterator=myTodoList.iterator();
+                while(iterator.hasNext()){
+                    MyTodo myTodo=iterator.next();
+                    if (myTodo.getClickItem()) {
+                        deleteData(myTodo);
+                        iterator.remove();
+                        myTodoAdapter.notifyDataSetChanged();
+                    }
+                }
+                selectData();
+            }
+        });
 
 
         //弹出添加对话框dialog
@@ -118,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 //初始化控件
                 EditText etAddTask = (EditText) inflate.findViewById(R.id.et_add_task);
                 ImageView putTask = (ImageView) inflate.findViewById(R.id.put_task);
-                 setDate = (TextView) inflate.findViewById(R.id.set_date);
+                setDate = (TextView) inflate.findViewById(R.id.set_date);
                 ImageView dateLogo = (ImageView) inflate.findViewById(R.id.date_logo);
                 EditText etContent = (EditText) inflate.findViewById(R.id.et_content);
                 TextView createTime = (TextView) inflate.findViewById(R.id.createTime);
@@ -263,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if ("编辑".equals(edit_list.getText().toString())){
                     edit_list.setText("取消");
+                    isEdit = true;
                     constraint.setVisibility(View.VISIBLE);
                     floatingActionButton.setVisibility(View.INVISIBLE);
 //                    myTodoAdapter.setOnItemClickListener(new MyTodoAdapter.OnItemClickListener() {
@@ -275,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
 //                    myTodoAdapter.setOnItemClickListener(null);
                 }else{
                     edit_list.setText("编辑");
+                    isEdit = false;
                     constraint.setVisibility(View.INVISIBLE);
                     floatingActionButton.setVisibility(View.VISIBLE);
                 }
@@ -318,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //删除
-    private void deleteData(MyTodo myTodo){
+    private void deleteData(MyTodo... myTodo){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -349,12 +385,12 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         yearPicker = inflate.findViewById(R.id.number_picker_year);
-         monthPicker = inflate.findViewById(R.id.number_picker_month);
-         datePicker = inflate.findViewById(R.id.number_picker_date);
-         hourPicker = inflate.findViewById(R.id.number_picker_hour);
-         minutePicker = inflate.findViewById(R.id.number_picker_minute);
-         Button timeSure = inflate.findViewById(R.id.time_sure);
-         Button timeCancel = inflate.findViewById(R.id.time_cancel);
+        monthPicker = inflate.findViewById(R.id.number_picker_month);
+        datePicker = inflate.findViewById(R.id.number_picker_date);
+        hourPicker = inflate.findViewById(R.id.number_picker_hour);
+        minutePicker = inflate.findViewById(R.id.number_picker_minute);
+        Button timeSure = inflate.findViewById(R.id.time_sure);
+        Button timeCancel = inflate.findViewById(R.id.time_cancel);
 
 //限制年份范围为前后五年
         int yearNow = calendar.get(Calendar.YEAR);
