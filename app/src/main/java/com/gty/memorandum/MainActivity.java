@@ -1,6 +1,7 @@
 package com.gty.memorandum;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     TextView setDate;
     TextView edit_list;
     private TimerService myservice = null;//绑定的service对象
+    private ConstraintLayout constraint;
 
 
 //    public static final String BROADCAST_ACTION="com.test.TestBroadcast";
@@ -99,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
         myTodoAdapter = new MyTodoAdapter(myTodoList);
         recyclerView.setAdapter(myTodoAdapter);
         edit_list = findViewById(R.id.edit_list);//编辑
+        constraint = findViewById(R.id.constraint);//下面全选删除
+        ImageView circle_not_choose = findViewById(R.id.circle_not_choose);
+
 
         //弹出添加对话框dialog
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
@@ -234,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
         myTodoAdapter.setOnItemClickListener(new MyTodoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("title",myTodoList.get(position).getTitle());
@@ -255,6 +261,24 @@ public class MainActivity extends AppCompatActivity {
         edit_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if ("编辑".equals(edit_list.getText().toString())){
+                    edit_list.setText("取消");
+                    constraint.setVisibility(View.VISIBLE);
+                    floatingActionButton.setVisibility(View.INVISIBLE);
+//                    myTodoAdapter.setOnItemClickListener(new MyTodoAdapter.OnItemClickListener() {
+//                        @Override
+//                        public void onItemClick(View view, int position) {
+//                            circle_not_choose.setImageResource(R.mipmap.choose);
+//                            myTodoList.get(position).set
+//                        }
+//                    });
+//                    myTodoAdapter.setOnItemClickListener(null);
+                }else{
+                    edit_list.setText("编辑");
+                    constraint.setVisibility(View.INVISIBLE);
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }
+
             }
         });
 

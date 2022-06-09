@@ -53,6 +53,7 @@ public class DetailActivity extends AppCompatActivity {
     NumberPicker datePicker;
     NumberPicker hourPicker;
     NumberPicker minutePicker;
+    ImageView detail_back;
 
 
     @Override
@@ -75,6 +76,14 @@ public class DetailActivity extends AppCompatActivity {
         changeTime = findViewById(R.id.changeTime);
         deleteDetail = findViewById(R.id.delete_detail);
         saveDetail = findViewById(R.id.save_detail);
+        detail_back = findViewById(R.id.detail_back);
+
+        detail_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
 
         //接收数据
