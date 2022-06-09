@@ -12,4 +12,7 @@ APP包含以下功能：
 展示列表采用Recyclerview+dialog
 数据库使用room数据库
 扫码下载：
+
+
+
 ![31_0c019081f5fdd06e8831f9b2029520df](https://user-images.githubusercontent.com/87628025/172887553-65955c8e-71e1-4fa6-9452-6662a82016c4.png)
