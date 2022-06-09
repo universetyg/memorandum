@@ -13,7 +13,7 @@ import java.util.List;
 
 @Dao
 public interface TodoDao {
-    @Query("select * from myTodo")
+    @Query("select * from myTodo order by alert_item")
     List<MyTodo> getAllMyTodoInfo();
 
     @Query("select * from myTodo where id = :id")

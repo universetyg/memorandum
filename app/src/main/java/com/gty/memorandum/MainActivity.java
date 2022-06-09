@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 //初始化控件
                 EditText etAddTask = (EditText) inflate.findViewById(R.id.et_add_task);
                 ImageView putTask = (ImageView) inflate.findViewById(R.id.put_task);
-                setDate = (TextView) inflate.findViewById(R.id.set_date);
+                 setDate = (TextView) inflate.findViewById(R.id.set_date);
                 ImageView dateLogo = (ImageView) inflate.findViewById(R.id.date_logo);
                 EditText etContent = (EditText) inflate.findViewById(R.id.et_content);
                 TextView createTime = (TextView) inflate.findViewById(R.id.createTime);
@@ -211,12 +211,14 @@ public class MainActivity extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                selectData();
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
+                selectData();
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
             }
         });
@@ -385,12 +387,12 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         yearPicker = inflate.findViewById(R.id.number_picker_year);
-        monthPicker = inflate.findViewById(R.id.number_picker_month);
-        datePicker = inflate.findViewById(R.id.number_picker_date);
-        hourPicker = inflate.findViewById(R.id.number_picker_hour);
-        minutePicker = inflate.findViewById(R.id.number_picker_minute);
-        Button timeSure = inflate.findViewById(R.id.time_sure);
-        Button timeCancel = inflate.findViewById(R.id.time_cancel);
+         monthPicker = inflate.findViewById(R.id.number_picker_month);
+         datePicker = inflate.findViewById(R.id.number_picker_date);
+         hourPicker = inflate.findViewById(R.id.number_picker_hour);
+         minutePicker = inflate.findViewById(R.id.number_picker_minute);
+         Button timeSure = inflate.findViewById(R.id.time_sure);
+         Button timeCancel = inflate.findViewById(R.id.time_cancel);
 
 //限制年份范围为前后五年
         int yearNow = calendar.get(Calendar.YEAR);
@@ -483,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //获取的日期时间结果
-                String result = String.format(Locale.CHINA, "%d-%d-%d %d:%d",
+                String result = String.format(Locale.CHINA, "%d-%02d-%02d %02d:%02d",
                         yearPicker.getValue(), monthPicker.getValue(), datePicker.getValue(),
                         hourPicker.getValue(), minutePicker.getValue());
 
@@ -515,7 +517,7 @@ public class MainActivity extends AppCompatActivity {
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
         //获取的日期时间结果
-        String result2 = String.format(Locale.CHINA, "%d-%d-%d %d:%d",
+        String result2 = String.format(Locale.CHINA, "%d-%02d-%02d %02d:%02d",
                 year, month, day,hour,minute);
         return result2;
     }

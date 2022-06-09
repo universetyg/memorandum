@@ -27,6 +27,8 @@ public class MyTodo {
     private Boolean deleteItem;
     @ColumnInfo(name = "click_item",typeAffinity = ColumnInfo.INTEGER)
     private Boolean clickItem = false;
+    @ColumnInfo(name = "alert_item",typeAffinity = ColumnInfo.INTEGER)
+    private Boolean alertItem = true;
 
 
     @Ignore
@@ -40,7 +42,7 @@ public class MyTodo {
     }
 
 
-    public MyTodo(int id, String title, String content, String createTime, String updateTime, String deadline, Boolean finish, Boolean deleteItem, Boolean clickItem) {
+    public MyTodo(int id, String title, String content, String createTime, String updateTime, String deadline, Boolean finish, Boolean deleteItem, Boolean clickItem, Boolean alertItem) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -50,6 +52,7 @@ public class MyTodo {
         this.finish = finish;
         this.deleteItem = deleteItem;
         this.clickItem = clickItem;
+        this.alertItem = alertItem;
     }
 
     public int getId() {
@@ -123,5 +126,17 @@ public class MyTodo {
 
     public void setClicItem(Boolean click) {
         this.clickItem = click;
+    }
+
+    public void setClickItem(Boolean clickItem) {
+        this.clickItem = clickItem;
+    }
+
+    public Boolean getAlertItem() {
+        return alertItem;
+    }
+
+    public void setAlertItem(Boolean alertItem) {
+        this.alertItem = alertItem;
     }
 }

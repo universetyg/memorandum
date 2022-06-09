@@ -40,8 +40,22 @@ public class ClockReceiver extends BroadcastReceiver {
                                 .getAllMyTodoInfo();
                         myTodos = allTodo;
                         for (MyTodo myTodo : myTodos) {
-                            if (myTodo.getDeadline().split(" ")[0].split("-")[2].compareTo("8") >= 0) {
+//                            if (myTodo.getDeadline().split(" ")[0].split("-")[2].compareTo("8") >= 0) {
+//                            }
+//
+//                            String year = myTodo.getDeadline().split(" ")[0].split("-")[0];
+//                            String month = myTodo.getDeadline().split(" ")[0].split("-")[1];
+//                            String day = myTodo.getDeadline().split(" ")[0].split("-")[2];
+//                            String hour = myTodo.getDeadline().split(" ")[1].split(":")[0];
+//                            String minute = myTodo.getDeadline().split(" ")[1].split(":")[1];
+
+                            String currentTime = DateUtil.timeStamp2Date(DateUtil.timeStamp(), null);
+                            Log.d("currentTime", currentTime);
+                            Log.d("myTodo.getDeadline()", myTodo.getDeadline());
+                            if (currentTime.compareTo(myTodo.getDeadline()) >= 0 && myTodo.getAlertItem()) {
                                 Utils.sendNotification(context,"你有一个待完成的任务","点击查看任务");
+                                myTodo.setAlertItem(false);
+                                updateData(myTodo,context);
                             }
                         }
                     }
@@ -54,6 +68,21 @@ public class ClockReceiver extends BroadcastReceiver {
                 //设置了系统时区的action
                 break;
         }
+
+    }
+
+    //更新数据
+    private void updateData(MyTodo myTodo, Context context){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TodoDatabase
+                        .getInstance(context)
+                        .getTodoDao()
+                        .updateMyTodoInfo(myTodo);
+                Log.d("update",myTodo.toString());
+            }
+        }).start();
 
     }
 

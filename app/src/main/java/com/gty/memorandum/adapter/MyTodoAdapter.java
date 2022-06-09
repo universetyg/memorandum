@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gty.memorandum.MainActivity;
@@ -38,13 +39,14 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         TextView tvTitle;
         TextView tvDate;
         ImageView circle_not_choose;
-
+        ConstraintLayout cl_item_todo_list;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             tvDate = (TextView) itemView.findViewById(R.id.tv_date);
             circle_not_choose = (ImageView) itemView.findViewById(R.id.circle_not_choose);
+            cl_item_todo_list = (ConstraintLayout) itemView.findViewById(R.id.cl_item_todo_list);
         }
     }
 
@@ -55,7 +57,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 
     @NonNull
     @Override
-    public MyTodoAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_todolist,parent,false);
         MyHolder myHolder = new MyHolder(view);
 //        edit_list = view.findViewById(R.id.edit_list);//编辑
@@ -79,14 +81,23 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyTodoAdapter.MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         MyTodo myTodo = mTodoList.get(position);
         holder.tvTitle.setText(myTodo.getTitle());
         holder.tvDate.setText(myTodo.getDeadline());
 
+
+        if (!myTodo.getAlertItem() && !MainActivity.isEdit) {
+            if (myTodo.getClickItem()) {
+                holder.cl_item_todo_list.setBackgroundResource(R.color.white);
+            } else {
+                holder.cl_item_todo_list.setBackgroundResource(R.color.teal_200);
+            }
+        }
         //clickitem这个值为1时，
         if (myTodo.getClickItem()){
             holder.circle_not_choose.setImageResource(R.mipmap.choose);
+            holder.cl_item_todo_list.setBackgroundResource(R.color.white);
             if (!MainActivity.isEdit) {
                 holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             }
@@ -129,7 +140,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
             @Override
             public void onClick(View view) {
                 //通过接口名调用方法
-                mOnItemClickListener.onItemClick(view,position);
+                    mOnItemClickListener.onItemClick(view,position);
 //                mOnItemClickListener.onItemClick(v, position);
             }
         });

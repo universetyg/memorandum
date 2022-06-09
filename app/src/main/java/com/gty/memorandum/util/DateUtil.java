@@ -42,7 +42,7 @@ public class DateUtil {
      */
     public static String timeStamp(){
         long time = System.currentTimeMillis();
-        String t = String.valueOf(time/1000);
+        String t = String.valueOf(time);
         return t;
     }
 

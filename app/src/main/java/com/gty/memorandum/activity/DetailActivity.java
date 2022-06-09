@@ -320,7 +320,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //获取的日期时间结果
-                String result = String.format(Locale.CHINA, "%d-%d-%d %d:%d",
+                String result = String.format(Locale.CHINA, "%d-%02d-%02d %02d:%02d",
                         yearPicker.getValue(), monthPicker.getValue(), datePicker.getValue(),
                         hourPicker.getValue(), minutePicker.getValue());
 
