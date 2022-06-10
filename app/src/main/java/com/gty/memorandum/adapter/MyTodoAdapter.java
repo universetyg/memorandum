@@ -80,6 +80,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         return myHolder;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull MyTodoAdapter.MyHolder holder, int position) {
         MyTodo myTodo = mTodoList.get(position);
@@ -96,9 +97,11 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         if (!myTodo.getAlertItem() && !MainActivity.isEdit) {
             if (myTodo.getClickItem()) {//
                 holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
+                holder.tvTitle.setTextColor(R.color.black);
                 Log.d("myTodo.getAlertItem()",myTodo.getAlertItem().toString());
             } else {
                 holder.cl_item_todo_list.setBackgroundResource(R.drawable.teal_bg);
+                holder.tvTitle.setTextColor(R.color.grey);
             }
         }
         //clickitem这个值为1时，
