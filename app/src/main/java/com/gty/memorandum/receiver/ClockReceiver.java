@@ -21,6 +21,7 @@ import java.util.Objects;
 public class ClockReceiver extends BroadcastReceiver {
 
     public static final String MINUTES = "MINUTES";
+    public static final String SECONDS = "SECONDS";
     public static final String HOUR = "HOUR";
     public static final String DAY = "DAY";
     List<MyTodo> myTodos = new ArrayList<>();
@@ -31,6 +32,7 @@ public class ClockReceiver extends BroadcastReceiver {
             case Intent.ACTION_TIME_TICK:
                 //每过一分钟 触发
                 Log.d("minute", MINUTES);
+                Log.d("seconds",SECONDS);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

@@ -14,6 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Memorandum">
         <activity
+            android:name=".activity.DateDemoActivity"
+            android:exported="true" >
+
+<!--             <intent-filter>-->
+<!--             <action android:name="android.intent.action.MAIN" />-->
+
+
+<!--             <category android:name="android.intent.category.LAUNCHER" />-->
+<!--             </intent-filter>-->
+        </activity>
+        <activity
             android:name=".activity.MainActivity2"
             android:exported="true">
 
@@ -37,21 +48,15 @@
             </intent-filter>
         </activity>
 
-
         <service
             android:name=".server.TimerService"
             tools:ignore="Instantiatable" />
-
 
         <receiver
             android:name=".receiver.ClockReceiver"
             android:enabled="true"
             android:exported="true"
-            tools:ignore="MissingClass"/>
+            tools:ignore="MissingClass" />
     </application>
-
-
-
-
 
 </manifest>

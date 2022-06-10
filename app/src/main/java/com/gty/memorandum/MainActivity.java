@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -519,19 +521,8 @@ public class MainActivity extends AppCompatActivity {
         //获取的日期时间结果
         String result2 = String.format(Locale.CHINA, "%d-%02d-%02d %02d:%02d",
                 year, month, day,hour,minute);
-        return result2;
+        return "创建时间："+result2;
     }
-
-//    //注册广播
-//    private void registerBroadcast(){
-//        IntentFilter filter=new IntentFilter();
-//        filter.addAction(BROADCAST_ACTION);
-//        receiver=new TestBroadcastReceiver();
-//        receiver2=new TempReceiver();
-//        localBroadcastManager=LocalBroadcastManager.getInstance(this);
-//        localBroadcastManager.registerReceiver(receiver,filter);
-//        localBroadcastManager.registerReceiver(receiver2,filter);
-//    }
 
     @Override
     protected void onDestroy() {
@@ -540,42 +531,6 @@ public class MainActivity extends AppCompatActivity {
 //        localBroadcastManager.unregisterReceiver(receiver2);
     }
 
-    //deadline时发出广播
-//    public void postBroadcast(){
-//        int len = myTodoAdapter.getItemCount();
-//        @SuppressLint("SimpleDateFormat")
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//
-//
-//        for(int i = 0 ; i < len ; i++){
-//            String time1 = myTodoList.get(i).getDeadline();
-//            String time2 = getCurrentTime();
-//            int s= time2.compareTo(time1);//当前时间大于截止时间返回1
-//
-//            if (s==1) {
-//                Utils.sendNotification(MainActivity.this);
-//            }
-//            Log.d("aaaaaaaa",myTodoList.get(i).getDeadline());
-//        }
-//    }
-
-
-//    //连接对象，重写OnserviceDisconnected和OnserviceConnected方法
-//    public ServiceConnection conn= new ServiceConnection() {
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName name) {
-////            Log.i(LOG, "onServiceDisconnected>>>>>>>>");
-//            myservice = null;
-//        }
-//
-//        @Override
-//        public void onServiceConnected(ComponentName name, IBinder service) {
-////            Log.i(LOG, "onServiceConnected>>>>>>>>");
-//            myservice = ((TimerService.MyBinder)service).getService();
-////            Log.i(LOG, myservice+">>>>>>>>");
-//        }
-//    };
 
 
 

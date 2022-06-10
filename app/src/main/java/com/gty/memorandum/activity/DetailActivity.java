@@ -68,6 +68,7 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     public void initView(){
         ed_change_title = findViewById(R.id.ed_change_title);
         tv_time = findViewById(R.id.tv_time);
@@ -110,6 +111,8 @@ public class DetailActivity extends AppCompatActivity {
                 myTodo.setDeadline(tv_time.getText().toString());
                 myTodo.setCreateTime(createTime.getText().toString());
                 myTodo.setUpdateTime(changeTime.getText().toString());
+                myTodo.setAlertItem(true);
+//                myTodo.setClicItem(false);
 //                myTodo.setId(id);
                 updateData(myTodo);
                 Toast.makeText(DetailActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
@@ -183,6 +186,7 @@ public class DetailActivity extends AppCompatActivity {
                         .getTodoDao()
                         .updateMyTodoInfo(myTodo);
                 Log.d("update",myTodo.toString());
+
             }
         }).start();
 
@@ -317,6 +321,7 @@ public class DetailActivity extends AppCompatActivity {
 
         //确定
         timeSure.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 //获取的日期时间结果

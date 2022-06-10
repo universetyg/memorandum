@@ -11,3 +11,6 @@ APP包含以下功能：
 
 展示列表采用Recyclerview+dialog
 数据库使用room数据库
+
+扫码下载
+![](../../大三下/31_0c019081f5fdd06e8831f9b2029520df.png)

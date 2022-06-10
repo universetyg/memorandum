@@ -87,9 +87,15 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         holder.tvDate.setText(myTodo.getDeadline());
 
 
+
+        if (myTodo.getAlertItem()){
+            holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
+        }
+        //不允许发送截止日期通知且不是编辑状态，也就是到了截止日期需要完成的
         if (!myTodo.getAlertItem() && !MainActivity.isEdit) {
-            if (myTodo.getClickItem()) {
+            if (myTodo.getClickItem()) {//
                 holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
+                Log.d("myTodo.getAlertItem()",myTodo.getAlertItem().toString());
             } else {
                 holder.cl_item_todo_list.setBackgroundResource(R.drawable.teal_bg);
             }
@@ -97,6 +103,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         //clickitem这个值为1时，
         if (myTodo.getClickItem()){
             holder.circle_not_choose.setImageResource(R.mipmap.choose);
+//            holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
             if (!MainActivity.isEdit) {
                 holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             }
