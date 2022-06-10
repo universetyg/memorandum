@@ -89,6 +89,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 
 
 
+        //可以发送通知的item都设置为白色背景
         if (myTodo.getAlertItem()){
             holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
 
@@ -107,6 +108,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         //clickitem这个值为1时，
         if (myTodo.getClickItem()){
             holder.circle_not_choose.setImageResource(R.mipmap.choose);
+
 //            holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
             if (!MainActivity.isEdit) {
                 holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -132,10 +134,10 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View view) {
-                if (myTodo.getClickItem()){
+                if (myTodo.getClickItem()){//TRUE已经选中
                     myTodo.setClicItem(false);
                     notifyDataSetChanged();
-                }else {
+                }else {//false没有选中
                     myTodo.setClicItem(true);
                     notifyDataSetChanged();
                 }
