@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 ImageView dateLogo = (ImageView) inflate.findViewById(R.id.date_logo);
                 EditText etContent = (EditText) inflate.findViewById(R.id.et_content);
                 TextView createTime = (TextView) inflate.findViewById(R.id.createTime);
+
                 //将布局设置给Dialog
                 dialog.setContentView(inflate);
                 //获取当前Activity所在的窗体
@@ -174,6 +175,13 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();//显示对话框
 
                 dateLogo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showPicker();
+                    }
+                });
+
+                setDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         showPicker();

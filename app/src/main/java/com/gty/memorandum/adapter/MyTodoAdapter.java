@@ -90,6 +90,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 
         if (myTodo.getAlertItem()){
             holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
+
         }
         //不允许发送截止日期通知且不是编辑状态，也就是到了截止日期需要完成的
         if (!myTodo.getAlertItem() && !MainActivity.isEdit) {
