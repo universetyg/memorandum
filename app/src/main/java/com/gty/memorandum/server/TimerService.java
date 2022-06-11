@@ -58,7 +58,7 @@ public class TimerService extends Service {
         getApplication().registerReceiver(timeChangeReceiver, intentFilter);
 
 
-        Toast.makeText(getApplicationContext(),"创建一个后台任务",0).show();
+//        Toast.makeText(getApplicationContext(),"创建一个后台任务",0).show();
         selectData();
 //        stopSelf();
     }

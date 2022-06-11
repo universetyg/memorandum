@@ -30,7 +30,7 @@ public class MyTodo {
     @ColumnInfo(name = "alert_item",typeAffinity = ColumnInfo.INTEGER)
     private Boolean alertItem = true;
     @ColumnInfo(name = "change",typeAffinity = ColumnInfo.INTEGER)
-    private Boolean change = true;
+    private Boolean change = false;//取消页面是否选中删除
 
 
     @Ignore

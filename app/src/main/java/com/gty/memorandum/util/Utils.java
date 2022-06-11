@@ -30,6 +30,7 @@ public class Utils {
 
         //获取 PendingIntent 对象，NotificationActivity是另一个活动
         Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pi = PendingIntent.getActivity(context, 0 ,intent, 0);
 
         //获取系统通知服务

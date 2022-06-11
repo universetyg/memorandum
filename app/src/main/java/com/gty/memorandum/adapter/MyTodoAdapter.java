@@ -19,6 +19,7 @@ import com.gty.memorandum.R;
 import com.gty.memorandum.activity.DetailActivity;
 import com.gty.memorandum.bean.MyTodo;
 import com.gty.memorandum.database.TodoDatabase;
+import com.gty.memorandum.manager.MyLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
     private OnItemClickListener mOnItemClickListener;
     private TextView edit_list ;
     private RecyclerView.LayoutManager layoutManager;
+
     private ViewGroup parent;
     Context context;
 
@@ -87,6 +89,10 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         holder.tvTitle.setText(myTodo.getTitle());
         holder.tvDate.setText(myTodo.getDeadline());
 
+//        MyLayoutManager manager = new MyLayoutManager(context);  //自定义布局管理器
+//        manager.setScrollEnabled(false);  //禁止滑动
+//        binding.companyRecy.setLayoutManager(manager);
+
 
 
         //可以发送通知的item都设置为白色背景
@@ -95,22 +101,23 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 
         }
         //不允许发送截止日期通知且不是编辑状态，也就是到了截止日期需要完成的
+        //编辑状态下的已经提醒过的内容
         if (!myTodo.getAlertItem() && !MainActivity.isEdit) {
-            if (myTodo.getClickItem()) {//
+            if (myTodo.getClickItem()) {//如果已经点击了，设置背景和字体颜色
                 holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
                 holder.tvTitle.setTextColor(R.color.black);
                 Log.d("myTodo.getAlertItem()",myTodo.getAlertItem().toString());
-            } else {
+            } else {//如果取消点击，设置背景颜色，以及字体颜色
                 holder.cl_item_todo_list.setBackgroundResource(R.drawable.teal_bg);
                 holder.tvTitle.setTextColor(R.color.grey);
             }
         }
-        //clickitem这个值为1时，
+        //clickitem这个值为1时，点击了的话
         if (myTodo.getClickItem()){
             holder.circle_not_choose.setImageResource(R.mipmap.choose);
 
 //            holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
-            if (!MainActivity.isEdit) {
+            if (!MainActivity.isEdit) {//非编辑状态给title划线
                 holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             }
 //            // 渐渐上滑定位到评论区域，如果页面是网络请求的数据，则可以等页面展示结束再滑动。

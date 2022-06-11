@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                         myTodo.setDeadline(setDate.getText().toString());
                         myTodo.setCreateTime(getCurrentTime());//创建时间
 
-                        if (myTodo.getTitle().equals("") || myTodo.getContent().equals("") || myTodo.getDeadline().equals("设置截止日期")){
+                        if (myTodo.getTitle().equals("") || myTodo.getContent().equals("")){
                             Toast.makeText(MainActivity.this, "请输入标题、内容和截止日期",Toast.LENGTH_SHORT).show();
                         }else{
                             myTodoList.add(myTodo);
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         //上拉加载下拉刷新
         RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
         refreshLayout.setRefreshHeader(new ClassicsHeader(this));
-        refreshLayout.setRefreshFooter(new ClassicsFooter(this));
+//        refreshLayout.setRefreshFooter(new ClassicsFooter(this));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -225,13 +225,13 @@ public class MainActivity extends AppCompatActivity {
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
             }
         });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshlayout) {
-                selectData();
-                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
-            }
-        });
+//        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+//            @Override
+//            public void onLoadMore(RefreshLayout refreshlayout) {
+//                selectData();
+//                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+//            }
+//        });
 
         //长按弹出删除对话框dialog删除
         myTodoAdapter.setLongClickLisenter(new MyTodoAdapter.LongClickLisenter() {
@@ -312,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
                     isEdit = true;
                     constraint.setVisibility(View.VISIBLE);
                     floatingActionButton.setVisibility(View.INVISIBLE);
+
 //                    myTodoAdapter.setOnItemClickListener(new MyTodoAdapter.OnItemClickListener() {
 //                        @Override
 //                        public void onItemClick(View view, int position) {
