@@ -59,11 +59,9 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 
     @NonNull
     @Override
-    public MyTodoAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_todolist,parent,false);
         MyHolder myHolder = new MyHolder(view);
-//        edit_list = view.findViewById(R.id.edit_list);//编辑
-
 
 
         //长按监听事件
@@ -82,9 +80,9 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
         return myHolder;
     }
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "NotifyDataSetChanged"})
     @Override
-    public void onBindViewHolder(@NonNull MyTodoAdapter.MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         MyTodo myTodo = mTodoList.get(position);
         holder.tvTitle.setText(myTodo.getTitle());
         holder.tvDate.setText(myTodo.getDeadline());
@@ -96,59 +94,106 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
 
 
         //可以发送通知的item都设置为白色背景
-        if (myTodo.getAlertItem()){
+        if (myTodo.getAlertItem() || MainActivity.isEdit){
             holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
 
         }
         //不允许发送截止日期通知且不是编辑状态，也就是到了截止日期需要完成的
         //编辑状态下的已经提醒过的内容
-        if (!myTodo.getAlertItem() && !MainActivity.isEdit) {
-            if (myTodo.getClickItem()) {//如果已经点击了，设置背景和字体颜色
-                holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
-                holder.tvTitle.setTextColor(R.color.black);
-                Log.d("myTodo.getAlertItem()",myTodo.getAlertItem().toString());
-            } else {//如果取消点击，设置背景颜色，以及字体颜色
-                holder.cl_item_todo_list.setBackgroundResource(R.drawable.teal_bg);
-                holder.tvTitle.setTextColor(R.color.grey);
-            }
-        }
-        //clickitem这个值为1时，点击了的话
-        if (myTodo.getClickItem()){
-            holder.circle_not_choose.setImageResource(R.mipmap.choose);
-
-//            holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
-            if (!MainActivity.isEdit) {//非编辑状态给title划线
-                holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            }
-//            // 渐渐上滑定位到评论区域，如果页面是网络请求的数据，则可以等页面展示结束再滑动。
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    // position根据自己的需求传入即可
-//                    scrollItemToTop(parent,position);
+//        if (!myTodo.getAlertItem()) {
+//            if (!MainActivity.isEdit) {
+//                if (!myTodo.getFinish()) {//如果已经点击了，设置背景和字体颜色
+//                    holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
+//                    holder.tvTitle.setTextColor(R.color.black);
+//                    Log.d("myTodo.getAlertItem()", myTodo.getAlertItem().toString());
+//                    holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+//                    holder.circle_not_choose.setImageResource(R.mipmap.choose);
+//                } else {//如果取消点击，设置背景颜色，以及字体颜色
+//                    holder.cl_item_todo_list.setBackgroundResource(R.drawable.teal_bg);
+//                    holder.tvTitle.setTextColor(R.color.grey);
+//                    holder.tvTitle.getPaint().setFlags(0);
+//                    holder.circle_not_choose.setImageResource(R.mipmap.circle_not_choose);
 //                }
-//            }, 200);
+//            } else {
+//                if (myTodo.getClickItem()) {//如果已经点击了，设置背景和字体颜色
+//                    holder.circle_not_choose.setImageResource(R.mipmap.choose);
+//                } else {//如果取消点击，设置背景颜色，以及字体颜色
+//                    holder.circle_not_choose.setImageResource(R.mipmap.circle_not_choose);
+//                }
+//            }
+//        }
+        //clickitem这个值为1时，点击了的话
+//        if (myTodo.getFinish()){
+//            holder.circle_not_choose.setImageResource(R.mipmap.choose);
+//
+////            holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
+//            if (!MainActivity.isEdit) {//非编辑状态给title划线
+//                holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+//            } else {
+//                holder.tvTitle.getPaint().setFlags(0);
+//            }
+////            // 渐渐上滑定位到评论区域，如果页面是网络请求的数据，则可以等页面展示结束再滑动。
+////            new Handler().postDelayed(new Runnable() {
+////                @Override
+////                public void run() {
+////                    // position根据自己的需求传入即可
+////                    scrollItemToTop(parent,position);
+////                }
+////            }, 200);
+//
+//        }else {
+//            holder.circle_not_choose.setImageResource(R.mipmap.circle_not_choose);
+//            holder.tvTitle.getPaint().setFlags(0);
+//        }
+//
 
-        }else {
-            holder.circle_not_choose.setImageResource(R.mipmap.circle_not_choose);
-            holder.tvTitle.getPaint().setFlags(0);
+        if (!MainActivity.isEdit) {
+            if (!myTodo.getAlertItem()) {//可以提醒状态,红色的时候
+                if (myTodo.getFinish()) {
+                    holder.circle_not_choose.setImageResource(R.mipmap.choose);
+                    holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                    holder.cl_item_todo_list.setBackgroundResource(R.drawable.white_bg);
+                } else {
+                    holder.circle_not_choose.setImageResource(R.mipmap.circle_not_choose);
+                    holder.tvTitle.getPaint().setFlags(0);
+                    holder.cl_item_todo_list.setBackgroundResource(R.drawable.teal_bg);
+                }
+            } else {//一般的时候
+                if (myTodo.getFinish()) {
+                    holder.circle_not_choose.setImageResource(R.mipmap.choose);
+                    holder.tvTitle.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    holder.circle_not_choose.setImageResource(R.mipmap.circle_not_choose);
+                    holder.tvTitle.getPaint().setFlags(0);
+                }
+            }
+        } else {
+            if (myTodo.getClickItem()) {
+                holder.circle_not_choose.setImageResource(R.mipmap.choose);
+            } else {
+                holder.circle_not_choose.setImageResource(R.mipmap.circle_not_choose);
+            }
         }
-
-
 
 
         holder.circle_not_choose.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View view) {
-                if (myTodo.getClickItem()){//TRUE已经选中
-                    myTodo.setClicItem(false);
-                    notifyDataSetChanged();
-                }else {//false没有选中
-                    myTodo.setClicItem(true);
-                    notifyDataSetChanged();
+                if (!MainActivity.isEdit) {
+                    if (myTodo.getFinish()) {
+                        myTodo.setClicItem(false);
+                        myTodo.setFinish(false);
+                    } else {
+                        myTodo.setClicItem(true);
+                        myTodo.setFinish(true);
+                    }
+                } else {
+                    myTodo.setClicItem(!myTodo.getClickItem());
                 }
                 updateData(myTodo,context);
+                notifyDataSetChanged();
+                selectData();
             }
         });
 
@@ -213,6 +258,25 @@ public class MyTodoAdapter extends RecyclerView.Adapter<MyTodoAdapter.MyHolder> 
                 Log.d("update",myTodo.toString());
             }
         }).start();
+
+    }
+
+    //查询
+    @SuppressLint("NotifyDataSetChanged")
+    private void selectData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<MyTodo> allTodo = TodoDatabase
+                        .getInstance(context)
+                        .getTodoDao()
+                        .getAllMyTodoInfo();
+                mTodoList.clear();
+                mTodoList.addAll(allTodo);
+            }
+        }).start();
+
+        notifyDataSetChanged();//刷新
 
     }
 

@@ -22,7 +22,7 @@ public class MyTodo {
     @ColumnInfo(name = "deadline",typeAffinity = ColumnInfo.TEXT)
     private String deadline;
     @ColumnInfo(name = "finish",typeAffinity = ColumnInfo.INTEGER)
-    private Boolean finish;
+    private Boolean finish = false;
     @ColumnInfo(name = "delete_item",typeAffinity = ColumnInfo.INTEGER)
     private Boolean deleteItem;
     @ColumnInfo(name = "click_item",typeAffinity = ColumnInfo.INTEGER)

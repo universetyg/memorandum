@@ -93,6 +93,7 @@ public class DetailActivity extends AppCompatActivity {
         tv_time.setText(intent.getStringExtra("deadline"));
         ed_change_content.setText(intent.getStringExtra("content"));
         createTime.setText(intent.getStringExtra("createTime"));
+
         if (null!=intent.getStringExtra("updateTime")){
             changeTime.setText(intent.getStringExtra("updateTime"));
         }

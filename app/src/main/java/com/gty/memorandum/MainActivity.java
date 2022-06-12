@@ -51,11 +51,11 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<MyTodo> myTodoList = new ArrayList<>();
+    public static List<MyTodo> myTodoList = new ArrayList<>();
     private FloatingActionButton floatingActionButton;
     private Context mContext = MainActivity.this;
     private View inflate;
-    MyTodoAdapter myTodoAdapter;
+    public static MyTodoAdapter myTodoAdapter;
     NumberPicker yearPicker;
     NumberPicker monthPicker;
     NumberPicker datePicker;
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean isEdit = false;
     private TextView choose_all;
     private TextView choose_delete;
+    private List<MyTodo> myTodo1 = new ArrayList<>();
 
 
 
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 for (MyTodo myTodo : myTodoList) {
                     myTodo.setClicItem(true);
+                    updateData(myTodo);
                 }
                 myTodoAdapter.notifyDataSetChanged();
             }
@@ -133,10 +135,12 @@ public class MainActivity extends AppCompatActivity {
                     if (myTodo.getClickItem()) {
                         deleteData(myTodo);
                         iterator.remove();
-                        myTodoAdapter.notifyDataSetChanged();
+//                        myTodoAdapter.notifyDataSetChanged();
                     }
                 }
+                myTodoAdapter.notifyDataSetChanged();
                 selectData();
+                Toast.makeText(mContext,"若加载不出来请手动刷新",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -222,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 selectData();
-                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+                refreshlayout.finishRefresh(/*,false*/);//传入false表示刷新失败
             }
         });
 //        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -299,7 +303,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 bundle.putInt("id",myTodoList.get(position).getId());
                 intent.putExtras(bundle);
-                startActivity(intent);
+                if (!MainActivity.isEdit) {
+                    startActivity(intent);
+                } else {
+                    if (myTodoList.get(position).getClickItem()) {
+                        myTodoList.get(position).setClicItem(false);
+                    } else {
+                        myTodoList.get(position).setClicItem(true);
+                    }
+                    updateData(myTodoList.get(position));
+                    myTodoAdapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -310,6 +324,11 @@ public class MainActivity extends AppCompatActivity {
                 if ("编辑".equals(edit_list.getText().toString())){
                     edit_list.setText("取消");
                     isEdit = true;
+                    for (MyTodo myTodo : myTodoList) {
+                        myTodo.setClicItem(false);
+                        updateData(myTodo);
+                    }
+                    myTodoAdapter.notifyDataSetChanged();
                     constraint.setVisibility(View.VISIBLE);
                     floatingActionButton.setVisibility(View.INVISIBLE);
 
@@ -324,6 +343,11 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     edit_list.setText("编辑");
                     isEdit = false;
+                    for (MyTodo myTodo : myTodoList) {
+                        myTodo.setClicItem(false);
+                        updateData(myTodo);
+                    }
+                    myTodoAdapter.notifyDataSetChanged();
                     constraint.setVisibility(View.INVISIBLE);
                     floatingActionButton.setVisibility(View.VISIBLE);
                 }
@@ -350,20 +374,20 @@ public class MainActivity extends AppCompatActivity {
     //查询
     @SuppressLint("NotifyDataSetChanged")
     private void selectData() {
+        myTodoList.clear();
+        myTodoAdapter.notifyDataSetChanged();
         new Thread(new Runnable() {
+            List<MyTodo> allTodo = new ArrayList<>();
             @Override
             public void run() {
-                List<MyTodo> allTodo = TodoDatabase
+                allTodo = TodoDatabase
                         .getInstance(MainActivity.this)
                         .getTodoDao()
                         .getAllMyTodoInfo();
-                myTodoList.clear();
                 myTodoList.addAll(allTodo);
             }
         }).start();
-
         myTodoAdapter.notifyDataSetChanged();//刷新
-
     }
 
     //删除
@@ -376,12 +400,11 @@ public class MainActivity extends AppCompatActivity {
                         .getTodoDao()
                         .deleteMyTodo(myTodo);
 
-                Log.d("del",myTodoList.toString());
+//                Log.d("del",myTodoList.toString());
             }
         }).start();
-
-
     }
+
 
     @Override
     protected void onResume() {
@@ -540,6 +563,22 @@ public class MainActivity extends AppCompatActivity {
 //        localBroadcastManager.unregisterReceiver(receiver2);
     }
 
+
+    //更新数据
+    private void updateData(MyTodo myTodo){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TodoDatabase
+                        .getInstance(MainActivity.this)
+                        .getTodoDao()
+                        .updateMyTodoInfo(myTodo);
+                Log.d("update",myTodo.toString());
+
+            }
+        }).start();
+
+    }
 
 
 
